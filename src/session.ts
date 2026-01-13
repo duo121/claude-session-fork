@@ -14,6 +14,7 @@ export interface Session {
   id: string;
   file: string;
   mtime: Date;
+  firstMessage?: string;
 }
 
 // Patterns to filter out system messages
@@ -39,22 +40,54 @@ export function getProjectDir(dir: string = process.cwd()): string {
 }
 
 export function findLatestSession(dir: string = process.cwd()): Session | null {
+  const sessions = findAllSessions(dir);
+  return sessions[0] || null;
+}
+
+export function findAllSessions(dir: string = process.cwd()): Session[] {
   const projectDir = getProjectDir(dir);
 
   if (!fs.existsSync(projectDir)) {
-    return null;
+    return [];
   }
 
-  const files = fs.readdirSync(projectDir)
+  return fs.readdirSync(projectDir)
     .filter(f => f.endsWith('.jsonl') && !f.startsWith('agent-'))
-    .map(f => ({
-      id: f.replace('.jsonl', ''),
-      file: path.join(projectDir, f),
-      mtime: fs.statSync(path.join(projectDir, f)).mtime
-    }))
-    .sort((a, b) => b.mtime.getTime() - a.mtime.getTime());
+    .map(f => {
+      const filePath = path.join(projectDir, f);
+      const id = f.replace('.jsonl', '');
+      const stat = fs.statSync(filePath);
+      
+      // Get first user message as preview
+      let firstMessage = '';
+      try {
+        const content = fs.readFileSync(filePath, 'utf-8');
+        for (const line of content.split('\n')) {
+          if (!line) continue;
+          try {
+            const data = JSON.parse(line);
+            if (data.type === 'user' && data.message) {
+              const msg = typeof data.message.content === 'string'
+                ? data.message.content
+                : data.message.content?.filter?.((c: any) => c.type === 'text')?.map?.((c: any) => c.text)?.join(' ') || '';
+              const cleaned = msg.replace(/^[\s\n\r]+/, '').replace(/\s+/g, ' ').trim();
+              if (cleaned && cleaned !== '[Request interrupted by user]') {
+                firstMessage = cleaned.slice(0, 60);
+                break;
+              }
+            }
+          } catch {}
+        }
+      } catch {}
 
-  return files[0] || null;
+      return {
+        id,
+        file: filePath,
+        mtime: stat.mtime,
+        firstMessage
+      };
+    })
+    .sort((a, b) => b.mtime.getTime() - a.mtime.getTime());
 }
 
 export function parseSession(sessionFile: string): Message[] {

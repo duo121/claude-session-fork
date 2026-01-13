@@ -17,20 +17,20 @@ sidebar_position: 2
 最简单的安装方式：
 
 ```bash
-npm install -g sfork
+npm install -g claude-session-fork
 ```
 
 验证安装：
 
 ```bash
-sfork --version
+csfork --version
 ```
 
 ### Homebrew (macOS)
 
 ```bash
-brew tap user/sfork
-brew install sfork
+brew tap duo121/claude-session-fork
+brew install claude-session-fork
 ```
 
 ### 从源码安装
@@ -39,11 +39,14 @@ brew install sfork
 
 ```bash
 # 克隆仓库
-git clone https://github.com/user/sfork.git
-cd sfork
+git clone https://github.com/duo121/claude-session-fork.git
+cd claude-session-fork
 
 # 安装依赖
 npm install
+
+# 编译
+npm run build
 
 # 全局链接
 npm link
@@ -54,7 +57,7 @@ npm link
 无需安装直接运行：
 
 ```bash
-npx sfork
+npx claude-session-fork
 ```
 
 ## 安装后
@@ -63,7 +66,7 @@ npx sfork
 
 ```bash
 cd your-project
-sfork
+csfork
 ```
 
 工具会自动找到你的会话文件。
@@ -79,13 +82,10 @@ sfork
 如果 npm 全局安装时遇到权限错误：
 
 ```bash
-# 方案 1：使用 sudo（不推荐）
-sudo npm install -g sfork
-
-# 方案 2：修复 npm 权限（推荐）
+# 修复 npm 权限（推荐）
 mkdir ~/.npm-global
 npm config set prefix '~/.npm-global'
 echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.zshrc
 source ~/.zshrc
-npm install -g sfork
+npm install -g claude-session-fork
 ```

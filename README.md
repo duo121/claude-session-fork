@@ -1,4 +1,4 @@
-# sfork
+# claude-session-fork
 
 [English](#english) | [中文](#中文)
 
@@ -13,7 +13,8 @@ Fork Claude Code sessions at any conversation point and continue in a new termin
 ### Features
 
 - 🔀 **Fork at any point** - Select any message to create a branch from
-- 📜 **Visual history** - Browse conversation with timestamps and code change indicators
+- 📜 **Session browser** - Browse all sessions with preview
+- 📝 **Visual history** - Browse conversation with code change indicators
 - 🖥️ **Dual terminal** - Works with Terminal.app and iTerm2
 - ⚡ **Quick install** - One command to install globally
 
@@ -22,50 +23,69 @@ Fork Claude Code sessions at any conversation point and continue in a new termin
 #### npm (Recommended)
 
 ```bash
-npm install -g sfork
+npm install -g claude-session-fork
 ```
 
 #### Homebrew (macOS)
 
 ```bash
-brew tap user/sfork
-brew install sfork
+brew tap duo121/claude-session-fork
+brew install claude-session-fork
 ```
 
 #### From source
 
 ```bash
-git clone https://github.com/user/sfork.git
-cd sfork
+git clone https://github.com/duo121/claude-session-fork.git
+cd claude-session-fork
 npm install
+npm run build
 npm link
 ```
 
 ### Usage
 
-In any directory with Claude Code sessions:
-
 ```bash
+# Open session list, select to fork
+csfork
+
+# Or use full name / short alias
+claude-session-fork
 sfork
 ```
 
-**Controls:**
+**Session List Controls:**
+- `↑↓` Navigate sessions
+- `Enter` Select session
+- `Esc` Exit
+
+**Message List Controls:**
 - `↑↓` Navigate messages
 - `+/-` Expand/collapse message preview
 - `Space` Toggle user-only filter
 - `Enter` Fork at selected point
-- `Esc` Exit
+- `Esc` Back to session list / Exit
 
 ### How It Works
 
 ```
-Original Session                    After Fork
-─────────────────                   ──────────────────
-[0] You: Build API                  Original Window
-[1] Claude: Creating...             (continues)
-[2] You: Add auth        ◄─ Fork    
-[3] Claude: Adding JWT              New Terminal
-[4] You: Use OAuth                  (starts from [2])
+┌─────────────────────────────────────────────────────────────┐
+│                    Original Session                          │
+├─────────────────────────────────────────────────────────────┤
+│  [0] You: "Help me build a REST API"                        │
+│  [1] Claude: "I'll help you create a REST API..."           │
+│  [2] You: "Add authentication"         ◄── Fork Point       │
+│  [3] Claude: "Let's add JWT authentication..."              │
+└─────────────────────────────────────────────────────────────┘
+                           │
+                           ▼ csfork (select message 2)
+                           │
+        ┌──────────────────┴──────────────────┐
+        ▼                                      ▼
+┌───────────────────┐                ┌───────────────────┐
+│  Original Window  │                │   New Terminal    │
+│  (continues)      │                │  (forked session) │
+└───────────────────┘                └───────────────────┘
 ```
 
 ### Requirements
@@ -76,7 +96,7 @@ Original Session                    After Fork
 
 ### Documentation
 
-Full docs: https://sfork.vercel.app
+Full docs: https://claude-session-fork.vercel.app
 
 ### License
 
@@ -93,7 +113,8 @@ MIT
 ### 功能特性
 
 - 🔀 **任意节点分叉** - 选择任意消息创建分支
-- 📜 **可视化历史** - 浏览对话，显示时间戳和代码变更标记
+- 📜 **会话浏览器** - 浏览所有会话及预览
+- 📝 **可视化历史** - 浏览对话，显示代码变更标记
 - 🖥️ **双终端支持** - 支持 Terminal.app 和 iTerm2
 - ⚡ **快速安装** - 一条命令全局安装
 
@@ -102,50 +123,69 @@ MIT
 #### npm（推荐）
 
 ```bash
-npm install -g sfork
+npm install -g claude-session-fork
 ```
 
 #### Homebrew (macOS)
 
 ```bash
-brew tap user/sfork
-brew install sfork
+brew tap duo121/claude-session-fork
+brew install claude-session-fork
 ```
 
 #### 从源码安装
 
 ```bash
-git clone https://github.com/user/sfork.git
-cd sfork
+git clone https://github.com/duo121/claude-session-fork.git
+cd claude-session-fork
 npm install
+npm run build
 npm link
 ```
 
 ### 使用方法
 
-在任意有 Claude Code 会话的目录下：
-
 ```bash
+# 打开会话列表，选择后分叉
+csfork
+
+# 或使用完整名称 / 短别名
+claude-session-fork
 sfork
 ```
 
-**快捷键：**
+**会话列表快捷键：**
+- `↑↓` 上下移动
+- `回车` 选择会话
+- `Esc` 退出
+
+**消息列表快捷键：**
 - `↑↓` 上下移动
 - `+/-` 展开/收起消息预览
 - `空格` 切换仅显示用户消息
 - `回车` 在选中位置分叉
-- `Esc` 退出
+- `Esc` 返回会话列表 / 退出
 
 ### 工作原理
 
 ```
-原始会话                           分叉后
-─────────────────                   ──────────────────
-[0] 你: 构建 API                    原窗口
-[1] Claude: 正在创建...             (继续)
-[2] 你: 添加认证        ◄─ 分叉点   
-[3] Claude: 添加 JWT                新终端
-[4] 你: 改用 OAuth                  (从 [2] 开始)
+┌─────────────────────────────────────────────────────────────┐
+│                       原始会话                               │
+├─────────────────────────────────────────────────────────────┤
+│  [0] 你: "帮我构建一个 REST API"                             │
+│  [1] Claude: "我来帮你创建 REST API..."                      │
+│  [2] 你: "添加认证"                    ◄── 分叉点            │
+│  [3] Claude: "让我们添加 JWT 认证..."                        │
+└─────────────────────────────────────────────────────────────┘
+                           │
+                           ▼ csfork（选择消息 2）
+                           │
+        ┌──────────────────┴──────────────────┐
+        ▼                                      ▼
+┌───────────────────┐                ┌───────────────────┐
+│     原窗口        │                │     新终端        │
+│    （继续）       │                │  （分叉的会话）   │
+└───────────────────┘                └───────────────────┘
 ```
 
 ### 系统要求
@@ -156,7 +196,7 @@ sfork
 
 ### 文档
 
-完整文档：https://sfork.vercel.app
+完整文档：https://claude-session-fork.vercel.app
 
 ### 许可证
 

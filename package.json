@@ -1,9 +1,11 @@
 {
-  "name": "sfork",
+  "name": "claude-session-fork",
   "version": "1.0.0",
   "description": "Fork Claude Code sessions at any conversation point",
   "type": "module",
   "bin": {
+    "claude-session-fork": "./dist/cli.js",
+    "csfork": "./dist/cli.js",
     "sfork": "./dist/cli.js"
   },
   "scripts": {
@@ -21,6 +23,10 @@
     "ink": "^5.0.1",
     "react": "^18.3.1"
   },
+  "devDependencies": {
+    "@types/node": "^22.10.10",
+    "typescript": "^5.7.3"
+  },
   "keywords": [
     "claude",
     "claude-code",
@@ -30,18 +36,17 @@
     "ai",
     "conversation"
   ],
-  "author": "",
+  "author": "duo121",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/user/sfork.git"
+    "url": "https://github.com/duo121/claude-session-fork.git"
   },
-  "homepage": "https://sfork.vercel.app",
+  "homepage": "https://claude-session-fork.vercel.app",
+  "bugs": {
+    "url": "https://github.com/duo121/claude-session-fork/issues"
+  },
   "engines": {
     "node": ">=18.0.0"
-  },
-  "devDependencies": {
-    "@types/node": "^25.0.8",
-    "typescript": "^5.9.3"
   }
 }

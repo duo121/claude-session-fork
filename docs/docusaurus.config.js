@@ -3,13 +3,13 @@ const { themes } = require('prism-react-renderer');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'sfork',
+  title: 'claude-session-fork',
   tagline: 'Fork Claude Code sessions at any point',
   favicon: 'img/favicon.ico',
-  url: 'https://sfork.vercel.app',
+  url: 'https://claude-session-fork.vercel.app',
   baseUrl: '/',
-  organizationName: 'user',
-  projectName: 'sfork',
+  organizationName: 'duo121',
+  projectName: 'claude-session-fork',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
 
@@ -29,7 +29,7 @@ const config = {
       ({
         docs: {
           sidebarPath: './sidebars.js',
-          editUrl: 'https://github.com/user/sfork/tree/main/docs/',
+          editUrl: 'https://github.com/duo121/claude-session-fork/tree/main/docs/',
         },
         theme: {
           customCss: './src/css/custom.css',
@@ -42,7 +42,7 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: 'sfork',
+        title: 'claude-session-fork',
         items: [
           {
             type: 'docSidebar',
@@ -55,7 +55,7 @@ const config = {
             position: 'right',
           },
           {
-            href: 'https://github.com/user/sfork',
+            href: 'https://github.com/duo121/claude-session-fork',
             label: 'GitHub',
             position: 'right',
           },
@@ -63,7 +63,7 @@ const config = {
       },
       footer: {
         style: 'dark',
-        copyright: `Copyright © ${new Date().getFullYear()} sfork. MIT License.`,
+        copyright: `Copyright © ${new Date().getFullYear()} claude-session-fork. MIT License.`,
       },
       prism: {
         theme: themes.github,

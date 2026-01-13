@@ -1,14 +1,150 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Text, useInput, useStdout } from 'ink';
-import type { Message } from './session.js';
+import type { Message, Session } from './session.js';
+
+// ============ Session List Component ============
+
+interface SessionListProps {
+  sessions: Session[];
+  onSelect: (session: Session) => void;
+  onExit: () => void;
+}
+
+export function SessionList({ sessions, onSelect, onExit }: SessionListProps) {
+  const { stdout } = useStdout();
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const terminalHeight = stdout?.rows || 24;
+  const maxVisible = Math.max(3, terminalHeight - 8);
+
+  useInput((input, key) => {
+    if (key.escape) {
+      onExit();
+      return;
+    }
+
+    if (key.upArrow) {
+      setSelectedIndex(i => Math.max(0, i - 1));
+    }
+    if (key.downArrow) {
+      setSelectedIndex(i => Math.min(sessions.length - 1, i + 1));
+    }
+
+    if (key.return && sessions.length > 0) {
+      onSelect(sessions[selectedIndex]);
+    }
+  });
+
+  if (sessions.length === 0) {
+    return (
+      <Box paddingX={1} flexDirection="column">
+        <Text color="red">No sessions found for this directory</Text>
+        <Text dimColor>Press Esc to exit</Text>
+      </Box>
+    );
+  }
+
+  // Calculate visible window
+  let startIdx = 0;
+  let endIdx = sessions.length;
+
+  if (sessions.length > maxVisible) {
+    const halfWindow = Math.floor(maxVisible / 2);
+    startIdx = Math.max(0, selectedIndex - halfWindow);
+    endIdx = Math.min(sessions.length, startIdx + maxVisible);
+    if (endIdx === sessions.length) {
+      startIdx = Math.max(0, sessions.length - maxVisible);
+    }
+  }
+
+  const visibleSessions = sessions.slice(startIdx, endIdx);
+
+  const formatTime = (date: Date): string => {
+    const now = new Date();
+    const diff = now.getTime() - date.getTime();
+    const minutes = Math.floor(diff / 60000);
+    const hours = Math.floor(diff / 3600000);
+    const days = Math.floor(diff / 86400000);
+
+    if (minutes < 1) return 'just now';
+    if (minutes < 60) return `${minutes}m ago`;
+    if (hours < 24) return `${hours}h ago`;
+    if (days < 7) return `${days}d ago`;
+    return date.toLocaleDateString();
+  };
+
+  return (
+    <Box flexDirection="column" paddingX={1}>
+      {/* Title */}
+      <Box marginBottom={0}>
+        <Text bold color="blue">Sessions</Text>
+        <Text dimColor> ({selectedIndex + 1}/{sessions.length})</Text>
+      </Box>
+
+      {/* Subtitle */}
+      <Box marginBottom={1}>
+        <Text dimColor>Select a session to fork from</Text>
+      </Box>
+
+      {/* Scroll indicator top */}
+      {startIdx > 0 && (
+        <Box>
+          <Text dimColor>  ↑ {startIdx} more above</Text>
+        </Box>
+      )}
+
+      {/* Sessions */}
+      {visibleSessions.map((session, visibleIdx) => {
+        const actualIndex = startIdx + visibleIdx;
+        const isSelected = actualIndex === selectedIndex;
+        const isCurrent = actualIndex === 0;
+
+        const preview = session.firstMessage || `Session ${session.id.slice(0, 8)}...`;
+        const time = formatTime(session.mtime);
+
+        return (
+          <Box key={session.id} flexDirection="column">
+            <Box>
+              <Text color={isSelected ? 'cyan' : undefined} bold={isSelected}>
+                {isSelected ? '❯ ' : '  '}
+              </Text>
+              <Text color={isSelected ? 'white' : 'gray'} bold={isSelected}>
+                {preview.slice(0, 60)}{preview.length > 60 ? '...' : ''}
+              </Text>
+              {isCurrent && <Text color="yellow" italic> (latest)</Text>}
+            </Box>
+            <Box marginLeft={2}>
+              <Text dimColor>  {time} · {session.id.slice(0, 8)}</Text>
+            </Box>
+          </Box>
+        );
+      })}
+
+      {/* Scroll indicator bottom */}
+      {endIdx < sessions.length && (
+        <Box>
+          <Text dimColor>  ↓ {sessions.length - endIdx} more below</Text>
+        </Box>
+      )}
+
+      {/* Footer */}
+      <Box marginTop={1}>
+        <Text dimColor>↑↓ Move · Enter Select · Esc Exit</Text>
+      </Box>
+    </Box>
+  );
+}
+
+// ============ Message List Component ============
 
 interface MessageListProps {
   messages: Message[];
   onSelect: (uuid: string) => void;
+  onBack?: () => void;
   onExit: () => void;
 }
 
-export function MessageList({ messages: allMessages, onSelect, onExit }: MessageListProps) {
+export function MessageList({ messages: allMessages, onSelect, onBack, onExit }: MessageListProps) {
   const { stdout } = useStdout();
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [expandLines, setExpandLines] = useState(1);
@@ -33,7 +169,11 @@ export function MessageList({ messages: allMessages, onSelect, onExit }: Message
 
   useInput((input, key) => {
     if (key.escape) {
-      onExit();
+      if (onBack) {
+        onBack();
+      } else {
+        onExit();
+      }
       return;
     }
 
@@ -118,7 +258,7 @@ export function MessageList({ messages: allMessages, onSelect, onExit }: Message
 
       {/* Subtitle */}
       <Box marginBottom={1}>
-        <Text dimColor>Select the point to fork from</Text>
+        <Text dimColor>Select the point to fork from{onBack ? ' · Esc to go back' : ''}</Text>
       </Box>
 
       {/* Scroll indicator top */}
@@ -192,7 +332,7 @@ export function MessageList({ messages: allMessages, onSelect, onExit }: Message
 
       {/* Footer */}
       <Box marginTop={1}>
-        <Text dimColor>↑↓ Move · +/- Lines · Space Filter · Enter Fork · Esc Exit</Text>
+        <Text dimColor>↑↓ Move · +/- Lines · Space Filter · Enter Fork · Esc {onBack ? 'Back' : 'Exit'}</Text>
       </Box>
     </Box>
   );

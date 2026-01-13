@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# sfork installer script
-# Usage: curl -fsSL https://raw.githubusercontent.com/user/sfork/main/scripts/install.sh | bash
+# claude-session-fork installer script
+# Usage: curl -fsSL https://raw.githubusercontent.com/duo121/claude-session-fork/main/scripts/install.sh | bash
 
 set -e
 
-echo "Installing sfork..."
+echo "Installing claude-session-fork..."
 
 # Check for Node.js
 if ! command -v node &> /dev/null; then
@@ -22,13 +22,13 @@ if [ "$NODE_VERSION" -lt 18 ]; then
 fi
 
 # Install via npm
-npm install -g sfork
+npm install -g claude-session-fork
 
 echo ""
-echo "✅ sfork installed successfully!"
+echo "✅ claude-session-fork installed successfully!"
 echo ""
 echo "Usage:"
 echo "  cd your-project"
-echo "  sfork"
+echo "  csfork"
 echo ""
-echo "Docs: https://sfork.vercel.app"
+echo "Docs: https://claude-session-fork.vercel.app"

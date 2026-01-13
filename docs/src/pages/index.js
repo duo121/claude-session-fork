@@ -20,7 +20,7 @@ function HomepageHeader() {
           </Link>
         </div>
         <div className={styles.codeBlock}>
-          <code>npm install -g sfork</code>
+          <code>npm install -g claude-session-fork</code>
         </div>
       </div>
     </header>
@@ -41,7 +41,7 @@ export default function Home() {
               <div className="col col--4">
                 <div className="text--center padding-horiz--md">
                   <h3>🔀 Fork Anywhere</h3>
-                  <p>Select any message in your conversation to create a branch point.</p>
+                  <p>Browse sessions and select any message to create a branch point.</p>
                 </div>
               </div>
               <div className="col col--4">

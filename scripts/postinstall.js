@@ -4,13 +4,14 @@
 console.log(`
 ╔═══════════════════════════════════════════════════════════╗
 ║                                                           ║
-║   sfork installed successfully! 🎉                        ║
+║   claude-session-fork installed! 🎉                       ║
 ║                                                           ║
 ║   Usage:                                                  ║
 ║     cd your-project                                       ║
-║     sfork                                                 ║
+║     csfork                                                ║
 ║                                                           ║
-║   Docs: https://sfork.vercel.app                          ║
+║   Commands: csfork, sfork, claude-session-fork            ║
+║   Docs: https://claude-session-fork.vercel.app            ║
 ║                                                           ║
 ╚═══════════════════════════════════════════════════════════╝
 `);
