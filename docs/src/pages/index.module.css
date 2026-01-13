@@ -1,0 +1,39 @@
+.heroBanner {
+  padding: 4rem 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.codeBlock {
+  margin-top: 2rem;
+  padding: 1rem 2rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  display: inline-block;
+}
+
+.codeBlock code {
+  color: white;
+  font-size: 1.2rem;
+}
+
+.features {
+  display: flex;
+  align-items: center;
+  padding: 2rem 0;
+  width: 100%;
+}
+
+@media screen and (max-width: 996px) {
+  .heroBanner {
+    padding: 2rem;
+  }
+}

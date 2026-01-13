@@ -1,0 +1,7 @@
+# Session Fork
+
+node_modules/
+.docusaurus/
+build/
+.DS_Store
+*.log

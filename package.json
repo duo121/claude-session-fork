@@ -1,0 +1,47 @@
+{
+  "name": "sfork",
+  "version": "1.0.0",
+  "description": "Fork Claude Code sessions at any conversation point",
+  "type": "module",
+  "bin": {
+    "sfork": "./dist/cli.js"
+  },
+  "scripts": {
+    "start": "node dist/cli.js",
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "prepublishOnly": "npm run build",
+    "postinstall": "node scripts/postinstall.js || true"
+  },
+  "files": [
+    "dist",
+    "scripts/postinstall.js"
+  ],
+  "dependencies": {
+    "ink": "^5.0.1",
+    "react": "^18.3.1"
+  },
+  "keywords": [
+    "claude",
+    "claude-code",
+    "fork",
+    "session",
+    "cli",
+    "ai",
+    "conversation"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/user/sfork.git"
+  },
+  "homepage": "https://sfork.vercel.app",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.8",
+    "typescript": "^5.9.3"
+  }
+}
