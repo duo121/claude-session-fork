@@ -20,3 +20,27 @@
   --ifm-color-primary-lightest: #4fddbf;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
+
+/* Fix code block in hero section for light theme */
+.heroBanner .codeBlock {
+  background: rgba(0, 0, 0, 0.7) !important;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  display: inline-block;
+  margin-top: 1.5rem;
+}
+
+.heroBanner .codeBlock code {
+  color: #fff !important;
+  font-size: 1.1rem;
+  background: transparent !important;
+}
+
+/* Light theme adjustments */
+[data-theme='light'] .heroBanner .codeBlock {
+  background: rgba(0, 0, 0, 0.8) !important;
+}
+
+[data-theme='light'] .heroBanner .codeBlock code {
+  color: #fff !important;
+}
