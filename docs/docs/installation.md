@@ -10,11 +10,9 @@ sidebar_position: 2
 - **Node.js 18+**
 - **Claude Code CLI** installed and configured
 
-## Install Methods
+## Install
 
 ### npm (Recommended)
-
-The easiest way to install:
 
 ```bash
 npm install -g claude-session-fork
@@ -23,7 +21,7 @@ npm install -g claude-session-fork
 Verify installation:
 
 ```bash
-csfork --version
+sfork --version
 ```
 
 ### Homebrew (macOS)
@@ -35,41 +33,39 @@ brew install claude-session-fork
 
 ### From Source
 
-For development or customization:
-
 ```bash
-# Clone the repository
 git clone https://github.com/duo121/claude-session-fork.git
 cd claude-session-fork
-
-# Install dependencies
-npm install
-
-# Build
-npm run build
-
-# Link globally
-npm link
+npm install && npm run build && npm link
 ```
 
 ### npx (No Install)
-
-Run without installing:
 
 ```bash
 npx claude-session-fork
 ```
 
-## Post-Installation
+## Uninstall
 
-After installation, navigate to any directory where you've used Claude Code:
+### npm
 
 ```bash
-cd your-project
-csfork
+npm uninstall -g claude-session-fork
 ```
 
-The tool will automatically find your session files.
+### Homebrew
+
+```bash
+brew uninstall claude-session-fork
+brew untap duo121/claude-session-fork
+```
+
+### From Source
+
+```bash
+cd claude-session-fork
+npm unlink -g claude-session-fork
+```
 
 ## Troubleshooting
 
@@ -79,13 +75,16 @@ Make sure you're in a directory where you've previously used Claude Code. Sessio
 
 ### Permission Denied
 
-If you get permission errors with npm global install:
-
 ```bash
-# Option 1: Fix npm permissions (recommended)
 mkdir ~/.npm-global
 npm config set prefix '~/.npm-global'
 echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.zshrc
 source ~/.zshrc
 npm install -g claude-session-fork
+```
+
+### Command not found after npm link
+
+```bash
+npm link --force
 ```

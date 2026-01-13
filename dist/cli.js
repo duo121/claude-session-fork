@@ -12,6 +12,7 @@ const cwdArg = args.find(a => a.startsWith('--cwd='));
 const terminalArg = args.find(a => a.startsWith('--terminal='));
 const showHelp = args.includes('--help') || args.includes('-h');
 const showVersion = args.includes('--version') || args.includes('-v');
+const showList = args.includes('--list') || args.includes('-l');
 const cwd = cwdArg ? cwdArg.split('=')[1] : process.cwd();
 const sessionId = sessionArg ? sessionArg.split('=')[1] : null;
 const terminalType = terminalArg ? terminalArg.split('=')[1] : process.env.TERM_PROGRAM;
@@ -21,13 +22,15 @@ if (showHelp) {
 claude-session-fork (csfork/sfork) - Fork Claude Code sessions
 
 Usage:
-  csfork                    Open session list, select to fork
-  csfork --session=<id>     Fork specific session directly
+  csfork                    Fork current session (latest modified)
+  csfork --list             Open session list to choose
+  csfork --session=<id>     Fork specific session
 
 Options:
   --session=<id>    Specify session ID
+  --list, -l        Show session list to choose from
   --cwd=<path>      Working directory (default: current)
-  --terminal=<type> Terminal type: auto, iterm, terminal
+  --terminal=<type> Terminal type: auto, iterm, terminal, vscode, cursor, kiro
   -h, --help        Show this help
   -v, --version     Show version
 
@@ -54,9 +57,24 @@ if (!isInteractive) {
         console.error('No sessions found for:', cwd);
         process.exit(1);
     }
-    // If session specified, use it; otherwise show session list
-    const targetSession = sessionId || '__list__';
     console.log(`Found ${sessions.length} session(s)`);
+    // --session=<id>: use specific session
+    // --list or -l: show session list
+    // default: use latest session (current session in Claude Code)
+    let targetSession;
+    if (sessionId) {
+        targetSession = sessionId;
+        console.log(`Using session: ${sessionId}`);
+    }
+    else if (showList) {
+        targetSession = '__list__';
+        console.log(`Opening session list...`);
+    }
+    else {
+        // Latest session = current session (most recently modified)
+        targetSession = sessions[0].id;
+        console.log(`Using current session: ${targetSession.slice(0, 8)}...`);
+    }
     console.log(`Opening fork UI...`);
     openTerminalWithUI(cwd, targetSession, terminalType);
     process.exit(0);

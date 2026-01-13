@@ -10,11 +10,9 @@ sidebar_position: 2
 - **Node.js 18+**
 - **Claude Code CLI** 已安装并配置
 
-## 安装方式
+## 安装
 
 ### npm（推荐）
-
-最简单的安装方式：
 
 ```bash
 npm install -g claude-session-fork
@@ -23,7 +21,7 @@ npm install -g claude-session-fork
 验证安装：
 
 ```bash
-csfork --version
+sfork --version
 ```
 
 ### Homebrew (macOS)
@@ -35,41 +33,39 @@ brew install claude-session-fork
 
 ### 从源码安装
 
-用于开发或自定义：
-
 ```bash
-# 克隆仓库
 git clone https://github.com/duo121/claude-session-fork.git
 cd claude-session-fork
-
-# 安装依赖
-npm install
-
-# 编译
-npm run build
-
-# 全局链接
-npm link
+npm install && npm run build && npm link
 ```
 
 ### npx（免安装）
-
-无需安装直接运行：
 
 ```bash
 npx claude-session-fork
 ```
 
-## 安装后
+## 卸载
 
-安装完成后，进入任意使用过 Claude Code 的目录：
+### npm
 
 ```bash
-cd your-project
-csfork
+npm uninstall -g claude-session-fork
 ```
 
-工具会自动找到你的会话文件。
+### Homebrew
+
+```bash
+brew uninstall claude-session-fork
+brew untap duo121/claude-session-fork
+```
+
+### 从源码安装的
+
+```bash
+cd claude-session-fork
+npm unlink -g claude-session-fork
+```
 
 ## 常见问题
 
@@ -79,13 +75,16 @@ csfork
 
 ### 权限被拒绝
 
-如果 npm 全局安装时遇到权限错误：
-
 ```bash
-# 修复 npm 权限（推荐）
 mkdir ~/.npm-global
 npm config set prefix '~/.npm-global'
 echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.zshrc
 source ~/.zshrc
 npm install -g claude-session-fork
+```
+
+### npm link 后找不到命令
+
+```bash
+npm link --force
 ```

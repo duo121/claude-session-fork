@@ -145,9 +145,32 @@ export function forkSession(sessionFile, forkUuid) {
     return newId;
 }
 export function launchClaudeSession(sessionId, cwd, terminal) {
-    const isIterm = terminal === 'iTerm.app' ||
-        (terminal !== 'Terminal.app' && fs.existsSync('/Applications/iTerm.app'));
     const cmd = `cd '${cwd}' && claude --resume '${sessionId}'`;
+    const terminalLower = terminal?.toLowerCase() || '';
+    // VS Code / Cursor / Kiro - use code CLI to open terminal
+    if (terminalLower.includes('vscode') || terminalLower === 'code') {
+        execSync(`code --folder-uri "file://${cwd}" -r`);
+        // VS Code doesn't have a direct way to run command in terminal via CLI
+        // Copy command to clipboard and notify user
+        execSync(`echo "${cmd}" | pbcopy`);
+        console.log('Command copied to clipboard. Paste in VS Code terminal.');
+        return;
+    }
+    if (terminalLower.includes('cursor')) {
+        execSync(`cursor --folder-uri "file://${cwd}" -r`);
+        execSync(`echo "${cmd}" | pbcopy`);
+        console.log('Command copied to clipboard. Paste in Cursor terminal.');
+        return;
+    }
+    if (terminalLower.includes('kiro')) {
+        execSync(`kiro "${cwd}"`);
+        execSync(`echo "${cmd}" | pbcopy`);
+        console.log('Command copied to clipboard. Paste in Kiro terminal.');
+        return;
+    }
+    // iTerm2
+    const isIterm = terminalLower === 'iterm' || terminalLower === 'iterm.app' ||
+        (terminalLower !== 'terminal' && terminalLower !== 'terminal.app' && fs.existsSync('/Applications/iTerm.app'));
     if (isIterm) {
         const script = `
       tell application "iTerm"
@@ -161,6 +184,7 @@ export function launchClaudeSession(sessionId, cwd, terminal) {
         execSync(`osascript -e '${script}'`);
     }
     else {
+        // Terminal.app
         const script = `
       tell application "Terminal"
         activate
@@ -173,8 +197,18 @@ export function launchClaudeSession(sessionId, cwd, terminal) {
 export function openTerminalWithUI(cwd, sessionId, terminal) {
     const sforkPath = process.argv[1];
     const cmd = `node '${sforkPath}' --interactive --session='${sessionId}' --cwd='${cwd}'`;
-    const isIterm = terminal === 'iTerm.app' ||
-        (terminal !== 'Terminal.app' && fs.existsSync('/Applications/iTerm.app'));
+    const fullCmd = `cd '${cwd}' && ${cmd}`;
+    const terminalLower = terminal?.toLowerCase() || '';
+    // VS Code / Cursor / Kiro - copy command to clipboard
+    if (terminalLower.includes('vscode') || terminalLower === 'code' ||
+        terminalLower.includes('cursor') || terminalLower.includes('kiro')) {
+        execSync(`echo "${fullCmd}" | pbcopy`);
+        console.log('Command copied to clipboard. Open a terminal and paste to run.');
+        return;
+    }
+    // iTerm2
+    const isIterm = terminalLower === 'iterm' || terminalLower === 'iterm.app' ||
+        (terminalLower !== 'terminal' && terminalLower !== 'terminal.app' && fs.existsSync('/Applications/iTerm.app'));
     if (isIterm) {
         const script = `
       tell application "iTerm"
@@ -182,7 +216,7 @@ export function openTerminalWithUI(cwd, sessionId, terminal) {
         tell current window
           create tab with default profile
           tell current session
-            write text "cd '${cwd}' && ${cmd}"
+            write text "${fullCmd}"
           end tell
         end tell
       end tell
@@ -190,12 +224,13 @@ export function openTerminalWithUI(cwd, sessionId, terminal) {
         spawn('osascript', ['-e', script], { detached: true, stdio: 'ignore' }).unref();
     }
     else {
+        // Terminal.app
         const script = `
       tell application "Terminal"
         activate
         tell application "System Events" to keystroke "t" using command down
         delay 0.3
-        do script "cd '${cwd}' && ${cmd}" in front window
+        do script "${fullCmd}" in front window
       end tell
     `;
         spawn('osascript', ['-e', script], { detached: true, stdio: 'ignore' }).unref();

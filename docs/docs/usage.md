@@ -4,22 +4,59 @@ sidebar_position: 3
 
 # Usage
 
-## Basic Usage
-
-Run in any directory with Claude Code sessions:
+## Quick Start
 
 ```bash
-csfork
+# In Claude Code, fork current session
+sfork
+
+# Or show session list to choose
+sfork --list
 ```
 
-This opens the session browser. Select a session, then select a message to fork from.
+## Commands
+
+All three commands are equivalent:
+
+```bash
+sfork                    # Short (recommended)
+csfork                   # Alternative
+claude-session-fork      # Full name
+```
+
+## Modes
+
+### Default Mode (Current Session)
+
+```bash
+sfork
+```
+
+Automatically detects and uses the current session (most recently modified). Best for use inside Claude Code.
+
+### List Mode
+
+```bash
+sfork --list
+sfork -l
+```
+
+Shows all sessions for the current directory. Select one to fork.
+
+### Specific Session
+
+```bash
+sfork --session=<session-id>
+```
+
+Fork a specific session by ID.
 
 ## Workflow
 
 ```
 ┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
 │  Session List   │ ──► │  Message List   │ ──► │  New Terminal   │
-│  (select one)   │     │  (select fork   │     │  (forked        │
+│  (--list mode)  │     │  (select fork   │     │  (forked        │
 │                 │     │   point)        │     │   session)      │
 └─────────────────┘     └─────────────────┘     └─────────────────┘
         │                       │
@@ -28,72 +65,47 @@ This opens the session browser. Select a session, then select a message to fork 
       Exit                Back to Sessions
 ```
 
-## Session List Controls
-
-| Key | Action |
-|-----|--------|
-| `↑` `↓` | Navigate through sessions |
-| `Enter` | Select session |
-| `Esc` | Exit |
-
-## Message List Controls
-
-| Key | Action |
-|-----|--------|
-| `↑` `↓` | Navigate through messages |
-| `+` `-` | Expand/collapse message preview (1-10 lines) |
-| `Space` | Toggle user-only message filter |
-| `Enter` | Fork at selected message |
-| `Esc` | Back to session list |
-
-## Interface
+## Controls
 
 ### Session List
 
-```
-Sessions (1/5)
-Select a session to fork from
-
-❯ Help me build a REST API...
-    2m ago · a1b2c3d4
-  Add authentication to the project...
-    1h ago · e5f6g7h8
-  Fix the login bug...
-    2d ago · i9j0k1l2
-
-↑↓ Move · Enter Select · Esc Exit
-```
+| Key | Action |
+|-----|--------|
+| `↑↓` | Navigate |
+| `Enter` | Select |
+| `Esc` | Exit |
 
 ### Message List
 
-```
-Fork (3/15) [2行]
-Select the point to fork from · Esc to go back
+| Key | Action |
+|-----|--------|
+| `↑↓` | Navigate |
+| `+/-` | Expand/collapse preview (1-10 lines) |
+| `Space` | Toggle user-only filter |
+| `Enter` | Fork |
+| `Esc` | Back / Exit |
 
-  ↑ 2 more above
-   You  ◆ Help me build a REST API
-❯  AI   ◆ I'll help you create a REST API with Express...
-   You    Add authentication
-   AI   ◆ Let's add JWT authentication... (current)
-  ↓ 8 more below
-
-↑↓ Move · +/- Lines · Space Filter · Enter Fork · Esc Back
-```
-
-### Interface Elements
-
-- **◆ indicator**: Yellow diamond marks messages with code changes
-- **(latest)**: Marks the most recent session
-- **(current)**: Marks the most recent message
-- **Scroll hints**: Shows items above/below visible area
-
-## Command Line Options
+## Terminal Options
 
 ```bash
-csfork --help              # Show help
-csfork --version           # Show version
-csfork --session=<id>      # Fork specific session directly
-csfork --cwd=/path         # Specify working directory
-csfork --terminal=iterm    # Force iTerm2
-csfork --terminal=terminal # Force Terminal.app
+sfork --terminal=auto      # Auto-detect (default)
+sfork --terminal=iterm     # iTerm2
+sfork --terminal=terminal  # Terminal.app
+sfork --terminal=vscode    # VS Code (copies command)
+sfork --terminal=cursor    # Cursor (copies command)
+sfork --terminal=kiro      # Kiro (copies command)
+```
+
+For VS Code/Cursor/Kiro, the command is copied to clipboard. Paste it in the integrated terminal.
+
+## All Options
+
+```bash
+sfork                      # Fork current session
+sfork --list, -l           # Show session list
+sfork --session=<id>       # Fork specific session
+sfork --cwd=<path>         # Working directory
+sfork --terminal=<type>    # Terminal type
+sfork --help, -h           # Help
+sfork --version, -v        # Version
 ```
