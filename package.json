@@ -1,6 +1,6 @@
 {
   "name": "claude-session-fork",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Fork Claude Code sessions at any conversation point",
   "type": "module",
   "bin": {

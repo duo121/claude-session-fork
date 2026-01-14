@@ -24,6 +24,8 @@ Verify installation:
 sfork --version
 ```
 
+The `/sfork` slash command will be available in Claude Code after installation.
+
 ### Homebrew (macOS)
 
 ```bash

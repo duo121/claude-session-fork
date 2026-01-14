@@ -7,10 +7,13 @@ sidebar_position: 3
 ## 快速开始
 
 ```bash
-# 在 Claude Code 中分叉当前会话
-sfork
+# 在 Claude Code 中使用斜杠命令（推荐）
+/sfork
 
-# 或显示会话列表选择
+# 或使用 shell 命令
+!sfork
+
+# 或从终端运行
 sfork --list
 ```
 
@@ -25,6 +28,15 @@ claude-session-fork      # 完整名称
 ```
 
 ## 模式
+
+### 在 Claude Code 中使用（推荐）
+
+```bash
+/sfork    # 斜杠命令 - Claude 自动执行 !sfork
+!sfork    # Shell 命令 - 直接运行 sfork
+```
+
+两种命令都会自动检测并分叉当前会话。
 
 ### 默认模式（当前会话）
 
@@ -100,6 +112,8 @@ sfork --terminal=kiro      # Kiro（复制命令）
 ## 所有选项
 
 ```bash
+/sfork                     # 斜杠命令（在 Claude Code 中）
+!sfork                     # Shell 命令（在 Claude Code 中）
 sfork                      # 分叉当前会话
 sfork --list, -l           # 显示会话列表
 sfork --session=<id>       # 分叉指定会话

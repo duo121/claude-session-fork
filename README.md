@@ -6,9 +6,15 @@ Fork Claude Code sessions at any conversation point and continue in a new termin
 
 ## Quick Start
 
-### Mode 1: Inside Claude Code (type `!sfork`)
+### Mode 1: Inside Claude Code (type `/sfork` or `!sfork`)
 
-While chatting with Claude, just type `!sfork`:
+While chatting with Claude, just type `/sfork` or `!sfork`:
+
+```
+> /sfork
+```
+
+or
 
 ```
 > !sfork
@@ -68,6 +74,7 @@ Press `Enter` → Shows message list → Select fork point → Opens new termina
 - **Visual history** - Browse conversation with code change indicators (◆)
 - **Multi-terminal** - Supports Terminal.app, iTerm2, VS Code, Cursor, Kiro
 - **Auto-detect** - Automatically uses current session in Claude Code
+- **Slash command** - Use `/sfork` in Claude Code for quick access
 
 ## Installation
 
@@ -116,6 +123,12 @@ npm unlink -g claude-session-fork
 ## Usage
 
 ```bash
+# In Claude Code, use slash command (recommended)
+/sfork
+
+# Or use shell command
+!sfork
+
 # Fork current session (auto-detect in Claude Code)
 sfork
 

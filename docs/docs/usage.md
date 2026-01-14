@@ -7,10 +7,13 @@ sidebar_position: 3
 ## Quick Start
 
 ```bash
-# In Claude Code, fork current session
-sfork
+# In Claude Code, use slash command (recommended)
+/sfork
 
-# Or show session list to choose
+# Or use shell command
+!sfork
+
+# Or run from terminal
 sfork --list
 ```
 
@@ -25,6 +28,15 @@ claude-session-fork      # Full name
 ```
 
 ## Modes
+
+### Inside Claude Code (Recommended)
+
+```bash
+/sfork    # Slash command - Claude executes !sfork for you
+!sfork    # Shell command - runs sfork directly
+```
+
+Both commands automatically detect and fork the current session.
 
 ### Default Mode (Current Session)
 
@@ -101,6 +113,8 @@ For VS Code/Cursor/Kiro, the command is copied to clipboard. Paste it in the int
 ## All Options
 
 ```bash
+/sfork                     # Slash command (in Claude Code)
+!sfork                     # Shell command (in Claude Code)
 sfork                      # Fork current session
 sfork --list, -l           # Show session list
 sfork --session=<id>       # Fork specific session

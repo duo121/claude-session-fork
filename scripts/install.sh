@@ -21,6 +21,12 @@ if [ "$NODE_VERSION" -lt 18 ]; then
     exit 1
 fi
 
+# Check if already installed and uninstall first
+if npm list -g claude-session-fork &> /dev/null; then
+    echo "Detected existing installation, uninstalling first..."
+    npm uninstall -g claude-session-fork
+fi
+
 # Install via npm
 npm install -g claude-session-fork
 
@@ -29,6 +35,9 @@ echo "✅ claude-session-fork installed successfully!"
 echo ""
 echo "Usage:"
 echo "  cd your-project"
-echo "  csfork"
+echo "  sfork              # Fork current session"
+echo "  sfork --list       # Browse all sessions"
+echo ""
+echo "In Claude Code, use /sfork or !sfork to fork the current session."
 echo ""
 echo "Docs: https://claude-session-fork.vercel.app"

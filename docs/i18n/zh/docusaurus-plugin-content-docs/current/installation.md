@@ -24,6 +24,8 @@ npm install -g claude-session-fork
 sfork --version
 ```
 
+安装后，`/sfork` 斜杠命令将在 Claude Code 中可用。
+
 ### Homebrew (macOS)
 
 ```bash

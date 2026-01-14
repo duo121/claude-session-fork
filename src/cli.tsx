@@ -59,7 +59,7 @@ Docs: https://claude-session-fork.vercel.app
 
 // Show version
 if (showVersion) {
-  console.log('1.0.0');
+  console.log('1.1.0');
   process.exit(0);
 }
 

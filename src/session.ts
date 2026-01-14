@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as os from 'os';
-import { spawn, execSync } from 'child_process';
+import { spawn, execSync, spawnSync } from 'child_process';
 
 export interface Message {
   uuid: string;
@@ -175,59 +175,21 @@ export function forkSession(sessionFile: string, forkUuid: string): string {
   return newId;
 }
 
-export function launchClaudeSession(sessionId: string, cwd: string, terminal?: string): void {
-  const cmd = `cd '${cwd}' && claude --resume '${sessionId}'`;
-  const terminalLower = terminal?.toLowerCase() || '';
+export function launchClaudeSession(sessionId: string, cwd: string, _terminal?: string): void {
+  // Clear screen
+  process.stdout.write('\x1Bc');
 
-  // VS Code / Cursor / Kiro - use code CLI to open terminal
-  if (terminalLower.includes('vscode') || terminalLower === 'code') {
-    execSync(`code --folder-uri "file://${cwd}" -r`);
-    // VS Code doesn't have a direct way to run command in terminal via CLI
-    // Copy command to clipboard and notify user
-    execSync(`echo "${cmd}" | pbcopy`);
-    console.log('Command copied to clipboard. Paste in VS Code terminal.');
-    return;
-  }
+  // Change to the working directory
+  process.chdir(cwd);
 
-  if (terminalLower.includes('cursor')) {
-    execSync(`cursor --folder-uri "file://${cwd}" -r`);
-    execSync(`echo "${cmd}" | pbcopy`);
-    console.log('Command copied to clipboard. Paste in Cursor terminal.');
-    return;
-  }
+  // Use spawnSync with inherit to properly handle TTY
+  const result = spawnSync('claude', ['--resume', sessionId], {
+    stdio: 'inherit',
+    cwd: cwd,
+    shell: true
+  });
 
-  if (terminalLower.includes('kiro')) {
-    execSync(`kiro "${cwd}"`);
-    execSync(`echo "${cmd}" | pbcopy`);
-    console.log('Command copied to clipboard. Paste in Kiro terminal.');
-    return;
-  }
-
-  // iTerm2
-  const isIterm = terminalLower === 'iterm' || terminalLower === 'iterm.app' ||
-    (terminalLower !== 'terminal' && terminalLower !== 'terminal.app' && fs.existsSync('/Applications/iTerm.app'));
-
-  if (isIterm) {
-    const script = `
-      tell application "iTerm"
-        activate
-        create window with default profile
-        tell current session of current window
-          write text "${cmd}"
-        end tell
-      end tell
-    `;
-    execSync(`osascript -e '${script}'`);
-  } else {
-    // Terminal.app
-    const script = `
-      tell application "Terminal"
-        activate
-        do script "${cmd}"
-      end tell
-    `;
-    execSync(`osascript -e '${script}'`);
-  }
+  process.exit(result.status || 0);
 }
 
 export function openTerminalWithUI(cwd: string, sessionId: string, terminal?: string): void {
@@ -244,9 +206,15 @@ export function openTerminalWithUI(cwd: string, sessionId: string, terminal?: st
     return;
   }
 
-  // iTerm2
+  // Detect current terminal from TERM_PROGRAM environment variable
+  const termProgram = process.env.TERM_PROGRAM?.toLowerCase() || '';
+
+  // Use iTerm2 only if:
+  // 1. Explicitly requested via --terminal=iterm
+  // 2. Currently running in iTerm2 (TERM_PROGRAM=iTerm.app)
   const isIterm = terminalLower === 'iterm' || terminalLower === 'iterm.app' ||
-    (terminalLower !== 'terminal' && terminalLower !== 'terminal.app' && fs.existsSync('/Applications/iTerm.app'));
+    (terminalLower !== 'terminal' && terminalLower !== 'terminal.app' &&
+     termProgram === 'iterm.app');
 
   if (isIterm) {
     const script = `
@@ -262,7 +230,7 @@ export function openTerminalWithUI(cwd: string, sessionId: string, terminal?: st
     `;
     spawn('osascript', ['-e', script], { detached: true, stdio: 'ignore' }).unref();
   } else {
-    // Terminal.app
+    // Terminal.app (default for Apple_Terminal and others)
     const script = `
       tell application "Terminal"
         activate

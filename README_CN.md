@@ -6,9 +6,15 @@
 
 ## 快速开始
 
-### 模式一：在 Claude Code 中输入 `!sfork`
+### 模式一：在 Claude Code 中输入 `/sfork` 或 `!sfork`
 
-在与 Claude 对话时，直接输入 `!sfork`：
+在与 Claude 对话时，直接输入 `/sfork` 或 `!sfork`：
+
+```
+> /sfork
+```
+
+或
 
 ```
 > !sfork
@@ -68,6 +74,7 @@ Select a session to fork from
 - **可视化历史** - 浏览对话，显示代码变更标记 (◆)
 - **多终端支持** - 支持 Terminal.app、iTerm2、VS Code、Cursor、Kiro
 - **自动检测** - 在 Claude Code 中自动使用当前会话
+- **斜杠命令** - 在 Claude Code 中使用 `/sfork` 快速访问
 
 ## 安装
 
@@ -116,6 +123,12 @@ npm unlink -g claude-session-fork
 ## 使用方法
 
 ```bash
+# 在 Claude Code 中使用斜杠命令（推荐）
+/sfork
+
+# 或使用 shell 命令
+!sfork
+
 # 分叉当前会话（在 Claude Code 中自动检测）
 sfork
 
