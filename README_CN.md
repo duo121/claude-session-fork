@@ -4,13 +4,70 @@
 
 在任意对话节点分叉 Claude Code 会话，在新终端继续。
 
+## 快速开始
+
+### 模式一：在 Claude Code 中输入 `!sfork`
+
+在与 Claude 对话时，直接输入 `!sfork`：
+
+```
+> !sfork
+```
+
+新终端标签页打开，显示分叉界面：
+
+```
+Fork (3/8) [1行]
+Select the point to fork from
+
+  ↑ 2 more above
+   You  ◆ 帮我构建一个 REST API
+   AI      我来用 Express 创建 REST API，首先...
+❯  You  ◆ 添加认证
+   AI   ◆ 为你的 API 添加 JWT 认证...
+  ↓ 2 more below
+
+↑↓ Move · +/- Lines · Space Filter · Enter Fork · Esc Exit
+```
+
+选择一条消息按 `Enter` → 打开新终端，启动分叉的会话
+
+---
+
+### 模式二：在终端运行 `sfork --list`
+
+浏览并选择你的所有 Claude Code 会话：
+
+```bash
+sfork --list
+```
+
+```
+Sessions (1/42)
+Select a session to fork from
+
+❯ 帮我构建一个 REST API...
+    2h ago · abc12345
+  修复登录模块的 bug...
+    5h ago · def45678
+  重构数据库层提升性能...
+    1d ago · ghi78901
+  ↓ 39 more below
+
+↑↓ Move · Enter Select · Esc Exit
+```
+
+按 `Enter` → 显示消息列表 → 选择分叉点 → 打开新终端
+
+---
+
 ## 功能特性
 
-- 🔀 **任意节点分叉** - 选择任意消息创建分支
-- 📜 **会话浏览器** - 浏览所有会话及预览
-- 📝 **可视化历史** - 浏览对话，显示代码变更标记 (◆)
-- 🖥️ **多终端支持** - 支持 Terminal.app、iTerm2、VS Code、Cursor、Kiro
-- ⚡ **自动检测** - 在 Claude Code 中自动使用当前会话
+- **任意节点分叉** - 选择任意消息创建分支
+- **会话浏览器** - 浏览所有会话及预览
+- **可视化历史** - 浏览对话，显示代码变更标记 (◆)
+- **多终端支持** - 支持 Terminal.app、iTerm2、VS Code、Cursor、Kiro
+- **自动检测** - 在 Claude Code 中自动使用当前会话
 
 ## 安装
 

@@ -4,13 +4,70 @@
 
 Fork Claude Code sessions at any conversation point and continue in a new terminal.
 
+## Quick Start
+
+### Mode 1: Inside Claude Code (type `!sfork`)
+
+While chatting with Claude, just type `!sfork`:
+
+```
+> !sfork
+```
+
+A new terminal tab opens with the fork UI:
+
+```
+Fork (3/8) [1行]
+Select the point to fork from
+
+  ↑ 2 more above
+   You  ◆ Help me build a REST API with Express
+   AI      I'll create a REST API with Express. Let me start by...
+❯  You  ◆ Add authentication
+   AI   ◆ Adding JWT authentication to your API...
+  ↓ 2 more below
+
+↑↓ Move · +/- Lines · Space Filter · Enter Fork · Esc Exit
+```
+
+Select a message and press `Enter` → Opens new terminal with forked session
+
+---
+
+### Mode 2: From Terminal (`sfork --list`)
+
+Browse and select from all your Claude Code sessions:
+
+```bash
+sfork --list
+```
+
+```
+Sessions (1/42)
+Select a session to fork from
+
+❯ Help me build a REST API with Express...
+    2h ago · abc12345
+  Fix the login bug in the auth module...
+    5h ago · def45678
+  Refactor database layer for better perf...
+    1d ago · ghi78901
+  ↓ 39 more below
+
+↑↓ Move · Enter Select · Esc Exit
+```
+
+Press `Enter` → Shows message list → Select fork point → Opens new terminal
+
+---
+
 ## Features
 
-- 🔀 **Fork at any point** - Select any message to create a branch from
-- 📜 **Session browser** - Browse all sessions with preview
-- 📝 **Visual history** - Browse conversation with code change indicators (◆)
-- 🖥️ **Multi-terminal** - Supports Terminal.app, iTerm2, VS Code, Cursor, Kiro
-- ⚡ **Auto-detect** - Automatically uses current session in Claude Code
+- **Fork at any point** - Select any message to create a branch from
+- **Session browser** - Browse all sessions with preview
+- **Visual history** - Browse conversation with code change indicators (◆)
+- **Multi-terminal** - Supports Terminal.app, iTerm2, VS Code, Cursor, Kiro
+- **Auto-detect** - Automatically uses current session in Claude Code
 
 ## Installation
 
